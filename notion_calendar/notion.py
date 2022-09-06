@@ -1,5 +1,7 @@
 import requests
 
+import utils
+
 
 class Client:
     def __init__(self, token: str):
@@ -15,19 +17,19 @@ class Client:
         self.base_url = "https://api.notion.com/v1/"
 
     def _get(self, endpoint: str):
-        r = self.session.get(self.base_url + endpoint)
-        r.raise_for_status()
-        return r.json()
+        res = self.session.get(self.base_url + endpoint)
+        utils.check_status(res)
+        return res.json()
 
     def _post(self, endpoint: str, data: dict = {}):
-        r = self.session.post(self.base_url + endpoint, json=data)
-        r.raise_for_status()
-        return r.json()
+        res = self.session.post(self.base_url + endpoint, json=data)
+        utils.check_status(res)
+        return res.json()
 
     def _patch(self, endpoint: str, data: dict = {}):
-        r = self.session.patch(self.base_url + endpoint, json=data)
-        r.raise_for_status()
-        return r.json()
+        res = self.session.patch(self.base_url + endpoint, json=data)
+        utils.check_status(res)
+        return res.json()
 
     def search(self, type: str = "database"):
         return self._post(
