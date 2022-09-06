@@ -13,3 +13,16 @@ error_code_message_map = {
     "service_unavailable": "Notion is currently unavailable, try again later",
     "database_connection_unavailable": "Database connection is currently unavailable, try again later",
 }
+
+default_properties = {
+    "Location": {"type": "select", "select": {"options": []}},
+    "Status": {"type": "status", "status": {"options": []}},
+    "Course": {"type": "select", "select": {"options": []}},
+    "Notes": {"type": "rich_text"},
+    "Tags": {"type": "multi_select", "multi_select": {"options": []}},
+    "Due": {"type": "date"},
+    "Scheduled": {"type": "date"},
+    "Name": {"type": "title"},
+}
+
+weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
