@@ -16,4 +16,4 @@ database_url = (
 database_id = utils.get_id_from_url(database_url)
 
 r = client.retrieve_database(database_id)
-print(r.json())
+print(r)

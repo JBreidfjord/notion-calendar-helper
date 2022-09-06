@@ -15,13 +15,19 @@ class Client:
         self.base_url = "https://api.notion.com/v1/"
 
     def _get(self, endpoint: str):
-        return self.session.get(self.base_url + endpoint)
+        r = self.session.get(self.base_url + endpoint)
+        r.raise_for_status()
+        return r.json()
 
     def _post(self, endpoint: str, data: dict = {}):
-        return self.session.post(self.base_url + endpoint, json=data)
+        r = self.session.post(self.base_url + endpoint, json=data)
+        r.raise_for_status()
+        return r.json()
 
     def _patch(self, endpoint: str, data: dict = {}):
-        return self.session.patch(self.base_url + endpoint, json=data)
+        r = self.session.patch(self.base_url + endpoint, json=data)
+        r.raise_for_status()
+        return r.json()
 
     def search(self, type: str = "database"):
         return self._post(
