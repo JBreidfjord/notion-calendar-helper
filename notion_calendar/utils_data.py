@@ -15,14 +15,14 @@ error_code_message_map = {
 }
 
 default_properties = {
-    "Location": {"type": "select", "select": {"options": []}},
     "Status": {"type": "status", "status": {"options": []}},
     "Course": {"type": "select", "select": {"options": []}},
-    "Notes": {"type": "rich_text"},
-    "Tags": {"type": "multi_select", "multi_select": {"options": []}},
-    "Due": {"type": "date"},
-    "Scheduled": {"type": "date"},
     "Name": {"type": "title"},
+    "Scheduled": {"type": "date"},
+    "Due": {"type": "date"},
+    "Tags": {"type": "multi_select", "multi_select": {"options": []}},
+    "Location": {"type": "select", "select": {"options": []}},
+    "Notes": {"type": "rich_text"},
 }
 
 weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
