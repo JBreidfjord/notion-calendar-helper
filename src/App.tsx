@@ -1,35 +1,55 @@
-import './App.css'
+import "./App.css";
 
-import reactLogo from './assets/react.svg'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+import { Client } from "@notionhq/client";
+import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+import DatabaseSelect from "./components/DatabaseSelect";
+import TokenForm from "./components/TokenForm";
+import ToolSelect from "./components/ToolSelect";
+
+const App = () => {
+  const [client, setClient] = useState<Client | null>(null);
+  const [databases, setDatabases] = useState<DatabaseObjectResponse[]>([]);
+  const [databaseId, setDatabaseId] = useState("");
+  const [selectedTool, setSelectedTool] = useState<JSX.Element | null>(null);
+
+  useEffect(() => {
+    if (!client || databases.length) return;
+
+    const fetchDatabases = async () => {
+      const response = await client.search({
+        filter: {
+          property: "object",
+          value: "database",
+        },
+      });
+      setDatabases(response.results as DatabaseObjectResponse[]);
+    };
+
+    fetchDatabases().catch(console.error);
+  }, [client, databases.length]);
+
+  const content = useMemo(() => {
+    if (selectedTool) return selectedTool;
+
+    if (!!databaseId && client)
+      return (
+        <ToolSelect databaseId={databaseId} client={client} setSelectedTool={setSelectedTool} />
+      );
+
+    if (databases.length)
+      return <DatabaseSelect databases={databases} setDatabaseId={setDatabaseId} />;
+
+    return <TokenForm setClient={setClient} />;
+  }, [databaseId, databases, selectedTool, client]);
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div>
+      <h2 className={selectedTool ? "top" : ""}>Notion Calendar Helper</h2>
+      {content}
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
