@@ -44,3 +44,6 @@ class Client:
 
     def retrieve_database(self, database_id: str):
         return self._get(f"databases/{database_id}")
+
+    def create_page(self, data: dict):
+        return self._post("pages", data)

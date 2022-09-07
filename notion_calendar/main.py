@@ -4,6 +4,7 @@ import typer
 from dotenv import load_dotenv
 from rich import print
 from rich.console import Console
+from rich.progress import track
 from rich.prompt import Confirm, Prompt
 from rich.table import Table
 
@@ -29,11 +30,10 @@ def main(
 
     if ctx.invoked_subcommand is None:
         # TODO: Implement options menu
-        ...
+        create(database_id, client)
 
 
-@app.command()
-def create():
+def create(database_id: str, client: Client):
     data = {}
     reset_data = (console, "Creation Wizard", data)
     utils.reset_console(*reset_data)
@@ -130,7 +130,7 @@ def create():
             }
         )
 
-    print("The following data will be added to the database:")
+    print("\nThe following data will be added to the database:")
     table = Table()
     [table.add_column(prop, justify="center") for prop in utils_data.default_properties.keys()]
     for props in page_properties_list:
@@ -159,7 +159,18 @@ def create():
     console.print(table)
     typer.confirm("\nIs this correct?", abort=True)
 
-    # TODO: Handle item creation
+    utils.reset_console(console, "Creation Wizard")
+    for props in track(page_properties_list, description="Uploading data to Notion..."):
+        client.create_page(
+            {
+                "parent": {
+                    "type": "database_id",
+                    "database_id": database_id,
+                },
+                "properties": props,
+            }
+        )
+    print("Data successfully uploaded")
 
 
 if __name__ == "__main__":
