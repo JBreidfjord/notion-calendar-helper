@@ -6,15 +6,19 @@
 }
 
 .top {
-  animation: slideUp 2s forwards;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  animation: slideTop 2s ease-out forwards;
 }
 
-@keyframes slideUp {
-  0% {
-    transform: translateY(0);
+@keyframes slideTop {
+  from {
+    transform: translateY(45vh);
   }
-  100% {
-    transform: translateY(-42vh);
+  to {
+    transform: translateY(0);
   }
 }
 
@@ -28,12 +32,26 @@
   }
 }
 
-@keyframes fadeIn {
+@keyframes slideUp {
   from {
-    opacity: 0;
+    transform: translateY(100%);
   }
 
   to {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0;
+  }
+
+  100% {
     opacity: 1;
   }
 }
@@ -58,11 +76,36 @@ select {
   gap: 1em;
 }
 
-#recurring-event-form > #name-fields > input.left {
+.left {
   animation: slideLeft 1s forwards;
   z-index: 1;
 }
 
-#recurring-event-form > #name-fields > label {
+#recurring-event-form > div:not(.completed-section),
+.fade-in {
   animation: fadeIn 1s forwards;
+}
+
+.completed-section {
+  animation: slideUp 1s forwards;
+}
+
+#weekday-selector,
+#tag-selector {
+  display: flex;
+  gap: 0.5em;
+}
+
+#weekday-selector > .card,
+#tag-selector > .card {
+  cursor: pointer;
+  padding: 0.5em 1em;
+}
+
+.card.selected {
+  box-shadow: 0 0 2px 1.5px rgba(165, 165, 165, 0.5);
+}
+
+label.small {
+  font-size: 0.9em;
 }
