@@ -115,7 +115,7 @@ const RecurringEventHelper = ({ databaseId, client }: RecurringEventHelperProps)
           title: [
             {
               text: {
-                content: `${name} ${isIncremental ? i : ""}`.trim(),
+                content: `${name} ${isIncremental ? i + 1 : ""}`.trim(),
               },
             },
           ],
