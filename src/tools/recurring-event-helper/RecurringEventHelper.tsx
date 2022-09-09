@@ -1,4 +1,4 @@
-import { addDays, differenceInCalendarDays, format } from "date-fns";
+import { addDays, differenceInCalendarDays, format, formatISO, parseISO } from "date-fns";
 import { useEffect, useLayoutEffect, useState } from "react";
 
 import { Client } from "@notionhq/client";
@@ -60,25 +60,20 @@ const RecurringEventHelper = ({ databaseId, client }: RecurringEventHelperProps)
 
     if (!locationCompleted) return;
 
-    console.log("handleSubmit");
     const start = new Date(startDate);
     const end = new Date(endDate);
     const days = differenceInCalendarDays(end, start);
-
-    console.log("days", days);
-    console.log(weekdays);
 
     const scheduledDatetimes = [];
     const dueDatetimes = [];
     for (let i = 1; i <= days; i++) {
       const date = addDays(start, i);
       const weekday = format(date, "EEEE");
-      console.log(weekdays.includes(weekday));
       if (weekdays.includes(weekday)) {
         if (hasTime) {
           scheduledDatetimes.push({
-            start: format(date, "yyyy-MM-dd") + "T" + startTime,
-            end: format(date, "yyyy-MM-dd") + "T" + endTime,
+            start: formatDatetime(date, startTime),
+            end: formatDatetime(date, endTime),
           });
         } else {
           scheduledDatetimes.push({
@@ -89,7 +84,7 @@ const RecurringEventHelper = ({ databaseId, client }: RecurringEventHelperProps)
 
       if (isDue && dueWeekdays.includes(weekday)) {
         dueDatetimes.push({
-          start: format(date, "yyyy-MM-dd") + "T" + dueTime,
+          start: formatDatetime(date, dueTime),
         });
       }
     }
@@ -308,6 +303,12 @@ const RecurringEventHelper = ({ databaseId, client }: RecurringEventHelperProps)
       )}
     </form>
   );
+};
+
+const formatDatetime = (date: Date, time: string) => {
+  const formattedDate = format(date, "yyyy-MM-dd");
+  const parsedDate = parseISO(formattedDate + "T" + time);
+  return formatISO(parsedDate);
 };
 
 export default RecurringEventHelper;
