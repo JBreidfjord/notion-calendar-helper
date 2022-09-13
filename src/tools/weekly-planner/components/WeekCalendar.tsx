@@ -1,10 +1,8 @@
-import { PageResponse, SelectProperty } from "../../../interfaces";
-
 import DayColumn from "./DayColumn";
+import { PageResponse } from "../../../interfaces";
 import Timeline from "./Timeline";
 import { partitionWeek } from "../utils";
 import styled from "styled-components";
-import { theme } from "../../../theme";
 import { useMemo } from "react";
 
 interface WeekCalendarProps {
@@ -39,5 +37,5 @@ const WeekContainer = styled.div`
   border-radius: 8px;
   padding: 16px;
   gap: 16px;
-  height: 75vh;
+  height: 80vh;
 `;

@@ -1,4 +1,4 @@
-import { DateProperty, PageResponse, SelectProperty, TitleProperty } from "../../../interfaces";
+import { DateProperty, PageResponse } from "../../../interfaces";
 import { getPageColor, getPageName, getScheduledDateAsMinutes } from "../utils";
 
 import styled from "styled-components";
@@ -14,7 +14,7 @@ const DayColumn = ({ day, pages }: DayColumnProps) => {
   const filteredPages = useMemo(() => {
     return pages.filter((page) => {
       const scheduled = page.properties.Scheduled as DateProperty;
-      if (!scheduled.date?.start || !scheduled.date?.end) return false;
+      if (!scheduled.date?.start) return false;
       return scheduled.date.start.split("T").length > 1; // Check if date has time
     });
   }, [pages]);
@@ -42,6 +42,7 @@ const DayContainer = styled.div`
   grid-row: content-start / content-end;
   display: grid;
   grid-template-rows: repeat(720, 1fr); // 12 hours
+  overflow: hidden;
 `;
 
 const DayHeader = styled.h2`
@@ -62,5 +63,6 @@ interface EventContainerProps {
 const EventContainer = styled.div<EventContainerProps>`
   background-color: ${(props) => (theme as any)[props.color || "default"]};
   grid-row: ${(props) => props.start} / ${(props) => props.end};
-  border-radius: 8px;
+  border-radius: 5px;
+  overflow: hidden;
 `;

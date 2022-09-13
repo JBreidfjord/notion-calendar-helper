@@ -54,11 +54,13 @@ export const getPageName = (page: PageResponse): string => {
 
 export const getScheduledDateAsMinutes = (page: PageResponse): [number, number] => {
   const scheduled = page.properties.Scheduled as DateProperty;
-  if (!scheduled.date?.start || !scheduled.date?.end) return [0, 0];
+  if (!scheduled.date?.start) return [0, 0];
+
   const start = new Date(scheduled.date.start);
+  const startMinutes = start.getHours() * 60 + start.getMinutes() - 480 + 1;
+
+  if (!scheduled.date?.end) return [startMinutes, startMinutes + 15];
+
   const end = new Date(scheduled.date.end);
-  return [
-    start.getHours() * 60 + start.getMinutes() - 480 + 1,
-    end.getHours() * 60 + end.getMinutes() - 480 + 1,
-  ];
+  return [startMinutes, end.getHours() * 60 + end.getMinutes() - 480 + 1];
 };
