@@ -1,6 +1,10 @@
-import { PageResponse } from "../../../interfaces";
+import { PageResponse, SelectProperty } from "../../../interfaces";
+
+import DayColumn from "./DayColumn";
+import Timeline from "./Timeline";
 import { partitionWeek } from "../utils";
 import styled from "styled-components";
+import { theme } from "../../../theme";
 import { useMemo } from "react";
 
 interface WeekCalendarProps {
@@ -12,48 +16,14 @@ const WeekCalendar = ({ pages }: WeekCalendarProps) => {
 
   return (
     <WeekContainer>
-      <DayContainer>
-        <DayHeader>Monday</DayHeader>
-        {days.monday.map((page) => (
-          <p>{page.id}</p>
-        ))}
-      </DayContainer>
-      <DayContainer>
-        <DayHeader>Tuesday</DayHeader>
-        {days.tuesday.map((page) => (
-          <p>{page.id}</p>
-        ))}
-      </DayContainer>
-      <DayContainer>
-        <DayHeader>Wednesday</DayHeader>
-        {days.wednesday.map((page) => (
-          <p>{page.id}</p>
-        ))}
-      </DayContainer>
-      <DayContainer>
-        <DayHeader>Thursday</DayHeader>
-        {days.thursday.map((page) => (
-          <p>{page.id}</p>
-        ))}
-      </DayContainer>
-      <DayContainer>
-        <DayHeader>Friday</DayHeader>
-        {days.friday.map((page) => (
-          <p>{page.id}</p>
-        ))}
-      </DayContainer>
-      <DayContainer>
-        <DayHeader>Saturday</DayHeader>
-        {days.saturday.map((page) => (
-          <p>{page.id}</p>
-        ))}
-      </DayContainer>
-      <DayContainer>
-        <DayHeader>Sunday</DayHeader>
-        {days.sunday.map((page) => (
-          <p>{page.id}</p>
-        ))}
-      </DayContainer>
+      <Timeline />
+      <DayColumn day="Monday" pages={days.monday} />
+      <DayColumn day="Tuesday" pages={days.tuesday} />
+      <DayColumn day="Wednesday" pages={days.wednesday} />
+      <DayColumn day="Thursday" pages={days.thursday} />
+      <DayColumn day="Friday" pages={days.friday} />
+      <DayColumn day="Saturday" pages={days.saturday} />
+      <DayColumn day="Sunday" pages={days.sunday} />
     </WeekContainer>
   );
 };
@@ -61,18 +31,13 @@ const WeekCalendar = ({ pages }: WeekCalendarProps) => {
 export default WeekCalendar;
 
 const WeekContainer = styled.div`
-  display: flex;
-`;
-
-const DayContainer = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-`;
-
-const DayHeader = styled.h2`
-  margin: 0;
-  padding: 0;
-  font-size: 1.5rem;
-  font-weight: 500;
+  display: grid;
+  grid-template-columns: [timeline-start] 0.5fr [timeline-end] repeat(7, 1fr);
+  grid-template-rows: [header-start] 1fr [header-end content-start] 100fr [content-end];
+  background-color: #3b3b3b62;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 16px;
+  gap: 16px;
+  height: 75vh;
 `;

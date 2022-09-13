@@ -1,4 +1,4 @@
-import { DateProperty, PageResponse } from "../../interfaces";
+import { DateProperty, PageResponse, SelectProperty, TitleProperty } from "../../interfaces";
 import { getISODay, parseISO } from "date-fns";
 
 export const partitionWeek = (pages: PageResponse[]) => {
@@ -42,4 +42,23 @@ export const partitionWeek = (pages: PageResponse[]) => {
   });
 
   return days;
+};
+
+export const getPageColor = (page: PageResponse): string | undefined => {
+  return (page.properties["Course"] as SelectProperty).select?.color;
+};
+
+export const getPageName = (page: PageResponse): string => {
+  return (page.properties["Name"] as TitleProperty).title[0].text.content;
+};
+
+export const getScheduledDateAsMinutes = (page: PageResponse): [number, number] => {
+  const scheduled = page.properties.Scheduled as DateProperty;
+  if (!scheduled.date?.start || !scheduled.date?.end) return [0, 0];
+  const start = new Date(scheduled.date.start);
+  const end = new Date(scheduled.date.end);
+  return [
+    start.getHours() * 60 + start.getMinutes() - 480 + 1,
+    end.getHours() * 60 + end.getMinutes() - 480 + 1,
+  ];
 };
