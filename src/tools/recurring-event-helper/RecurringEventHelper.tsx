@@ -1,15 +1,12 @@
 import { addDays, differenceInCalendarDays, format, formatISO, parseISO } from "date-fns";
 import { useEffect, useLayoutEffect, useState } from "react";
 
-import { Client } from "@notionhq/client";
 import { GetDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
 import TagSelector from "./components/TagSelector";
+import { ToolProps } from "../interfaces";
 import WeekdaySelector from "./components/WeekdaySelector";
 
-interface RecurringEventHelperProps {
-  databaseId: string;
-  client: Client;
-}
+interface RecurringEventHelperProps extends ToolProps {}
 
 const RecurringEventHelper = ({ databaseId, client }: RecurringEventHelperProps) => {
   const [database, setDatabase] = useState<GetDatabaseResponse | null>(null);
