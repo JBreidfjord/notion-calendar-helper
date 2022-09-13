@@ -60,6 +60,12 @@ const WeeklyPlanner = ({ databaseId, client }: WeeklyPlannerProps) => {
             },
           ],
         },
+        sorts: [
+          {
+            property: "Scheduled",
+            direction: "ascending",
+          },
+        ],
       });
 
       setPages(response.results as PageResponse[]);
@@ -90,29 +96,6 @@ const WeeklyPlanner = ({ databaseId, client }: WeeklyPlannerProps) => {
     if (loadingUnscheduledPages) return;
     fetchUnscheduledPages().catch(console.error);
   }, [databaseId, client]);
-
-  // const pages = useMemo(() => {
-  //   if (!database || loading) return [];
-
-  //   return (results as PageResponse[]).filter(
-  //     (page) => page.parent.database_id === databaseId && !page.archived
-  //   );
-  // }, [database, results, loading, databaseId]);
-
-  // const weekPages = useMemo(() => {
-  //   if (!pages.length) return [];
-
-  //   return pages.filter((page) => {
-  //     const start = (page.properties["Scheduled"] as DateProperty).date?.start;
-  //     if (!start) return false;
-  //     return isWithinInterval(new Date(start), week);
-  //   });
-  // }, [pages, week]);
-
-  // if (!database || loading) return <div>Loading...</div>;
-
-  // console.log(pages);
-  // console.log(weekPages);
 
   if (!database || loadingPages || loadingUnscheduledPages) return <div>Loading...</div>;
 
