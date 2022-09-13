@@ -30,7 +30,7 @@ export default WeekCalendar;
 
 const WeekContainer = styled.div`
   display: grid;
-  grid-template-columns: [timeline-start] 0.5fr [timeline-end] repeat(7, 1fr);
+  grid-template-columns: [timeline-start] 0.25fr [timeline-end] repeat(7, 1fr);
   grid-template-rows: [header-start] 1fr [header-end content-start] 100fr [content-end];
   background-color: #3b3b3b62;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);

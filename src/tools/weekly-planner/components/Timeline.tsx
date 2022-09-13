@@ -37,6 +37,8 @@ const TimeContainer = styled.div`
   grid-column: timeline-start / timeline-end;
   display: grid;
   grid-template-rows: repeat(720, 1fr); // 12 hours
+  align-items: start;
+  justify-items: end;
 `;
 
 interface TimeProps {
@@ -46,6 +48,7 @@ interface TimeProps {
 
 const Time = styled.div<TimeProps>`
   grid-row: ${(props) => props.start} / ${(props) => props.end};
+  font-size: 0.85rem;
 `;
 
 const CornerGap = styled.div`
