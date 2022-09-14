@@ -1,9 +1,8 @@
-import { Client } from "@notionhq/client";
 import RecurringEventHelper from "../tools/recurring-event-helper/RecurringEventHelper";
+import { ToolProps } from "../tools/interfaces";
+import WeeklyPlanner from "../tools/weekly-planner/WeeklyPlanner";
 
-interface ToolSelectProps {
-  databaseId: string;
-  client: Client;
+interface ToolSelectProps extends ToolProps {
   setSelectedTool: (tool: JSX.Element | null) => void;
 }
 
@@ -15,6 +14,7 @@ interface ToolOption {
 const ToolSelect = ({ setSelectedTool, ...props }: ToolSelectProps) => {
   const toolOptions: ToolOption[] = [
     { name: "Recurring Event Helper", value: <RecurringEventHelper {...props} /> },
+    { name: "Weekly Planner", value: <WeeklyPlanner {...props} /> },
   ];
 
   return (
