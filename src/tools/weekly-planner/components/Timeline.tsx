@@ -49,6 +49,17 @@ interface TimeProps {
 const Time = styled.div<TimeProps>`
   grid-row: ${(props) => props.start} / ${(props) => props.end};
   font-size: 0.85rem;
+
+  &:after {
+    content: "";
+    position: absolute;
+    width: calc((84vw - 64px) * 0.75);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+    height: 3vh;
+    z-index: -1;
+    transform: translateX(-1rem);
+  }
 `;
 
 const CornerGap = styled.div`
