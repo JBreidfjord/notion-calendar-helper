@@ -7,10 +7,13 @@ import { useMemo } from "react";
 
 interface WeekCalendarProps {
   pages: PageResponse[];
+  loading: boolean;
 }
 
-const WeekCalendar = ({ pages }: WeekCalendarProps) => {
+const WeekCalendar = ({ pages, loading }: WeekCalendarProps) => {
   const days = useMemo(() => partitionWeek(pages), [pages]);
+
+  if (loading) return <WeekContainer>Loading...</WeekContainer>;
 
   return (
     <WeekContainer>

@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import { GetDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
 import { PageResponse } from "../../interfaces";
 import { ToolProps } from "../interfaces";
+import UnscheduledHelper from "./components/UnscheduledHelper";
 import WeekCalendar from "./components/WeekCalendar";
+import styled from "styled-components";
 
 interface WeeklyPlannerProps extends ToolProps {}
 
@@ -27,8 +29,15 @@ const WeeklyPlanner = ({ databaseId, client }: WeeklyPlannerProps) => {
   const [week, setWeek] = useState(getCurrentWeek());
   const [pages, setPages] = useState<PageResponse[]>([]);
   const [loadingPages, setLoadingPages] = useState(false);
+  const [shouldLoadPages, setShouldLoadPages] = useState(true);
   const [unscheduledPages, setUnscheduledPages] = useState<PageResponse[]>([]);
   const [loadingUnscheduledPages, setLoadingUnscheduledPages] = useState(false);
+  const [shouldLoadUnscheduledPages, setShouldLoadUnscheduledPages] = useState(true);
+
+  const handleRefresh = () => {
+    setShouldLoadPages(true);
+    setShouldLoadUnscheduledPages(true);
+  };
 
   useEffect(() => {
     const fetchDatabase = async () => {
@@ -70,11 +79,12 @@ const WeeklyPlanner = ({ databaseId, client }: WeeklyPlannerProps) => {
 
       setPages(response.results as PageResponse[]);
       setLoadingPages(false);
+      setShouldLoadPages(false);
     };
 
-    if (loadingPages) return;
+    if (loadingPages || !shouldLoadPages) return;
     fetchPages().catch(console.error);
-  }, [databaseId, client, week]);
+  }, [databaseId, client, week, loadingPages, shouldLoadPages]);
 
   useEffect(() => {
     const fetchUnscheduledPages = async () => {
@@ -91,19 +101,31 @@ const WeeklyPlanner = ({ databaseId, client }: WeeklyPlannerProps) => {
 
       setUnscheduledPages(response.results as PageResponse[]);
       setLoadingUnscheduledPages(false);
+      setShouldLoadUnscheduledPages(false);
     };
 
-    if (loadingUnscheduledPages) return;
+    if (loadingUnscheduledPages || !shouldLoadUnscheduledPages) return;
     fetchUnscheduledPages().catch(console.error);
-  }, [databaseId, client]);
+  }, [databaseId, client, loadingUnscheduledPages, shouldLoadUnscheduledPages]);
 
-  if (!database || loadingPages || loadingUnscheduledPages) return <div>Loading...</div>;
+  if (!database) return <div>Loading...</div>;
 
   return (
-    <div>
-      <WeekCalendar pages={pages} />
-    </div>
+    <Container>
+      <WeekCalendar pages={pages} loading={loadingPages} />
+      <UnscheduledHelper
+        pages={pages}
+        unscheduledPages={unscheduledPages}
+        loading={loadingPages || loadingUnscheduledPages}
+        handleRefresh={handleRefresh}
+      />
+    </Container>
   );
 };
 
 export default WeeklyPlanner;
+
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+`;
